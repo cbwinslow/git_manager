@@ -1,0 +1,40 @@
+# .github/workflows/generate-docstrings.yml
+name: Generate Docstrings
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  generate-docstrings:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository.
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python.
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install Pyment.
+      - name: Install Pyment
+        run: pip install pyment
+
+      # Step 4: Run Pyment to generate/update docstrings.
+      - name: Generate Docstrings
+        run: |
+          # Find all Python files and run Pyment in write mode.
+          find . -name "*.py" -exec pyment -w {} \;
+
+      # Step 5: Commit and push changes if any docstrings were added or updated.
+      - name: Commit changes if any
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "chore: auto-generate/update docstrings"
+          add: "."
