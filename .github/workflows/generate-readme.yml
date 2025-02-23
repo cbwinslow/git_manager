@@ -1,0 +1,41 @@
+# .github/workflows/generate-readme.yml
+name: Generate README
+
+# Trigger the workflow on push to main branch or manually.
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  generate-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository.
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment.
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Step 3: Install the readme-md-generator globally.
+      - name: Install readme-md-generator
+        run: npm install -g readme-md-generator
+
+      # Step 4: Run the generator.
+      # This command will update or generate the README file.
+      - name: Generate README file
+        run: readme-md-generator --update
+
+      # Step 5: Commit any changes to README.md if it has been updated.
+      - name: Commit changes if any
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "chore: auto-update README"
+          add: "README.md"
