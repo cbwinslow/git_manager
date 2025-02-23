@@ -30,7 +30,8 @@ jobs:
       # Step 4: Run the generator.
       # This command will update or generate the README file.
       - name: Generate README file
-        run: readme-md-generator --update
+        run: npx readme-md-generator --update
+
 
       # Step 5: Commit any changes to README.md if it has been updated.
       - name: Commit changes if any
